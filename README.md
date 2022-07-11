@@ -21,7 +21,7 @@ With this well documented driver you can place a hook on any function.
 
 # Let's take a look at MmCopyMemory:
 MmCopyMemory is located in ntoskrnl.
-```
+```c++
 NTSTATUS __fastcall MmCopyMemory(PVOID TargetAddress, unsigned __int64 sourceaddress, unsigned __int64 size, int virtorphys, _QWORD *numberofbytestransferred)
 
 //or from microsoft docs
@@ -56,7 +56,7 @@ NumberOfBytesTransferred
 A pointer to a location to which the routine writes the number of bytes successfully copied from the SourceAddress location to the buffer at TargetAddress.
 
 Sounds pretty easy to hook. 5 args! Let's make a function in our driver:
-```
+```c++
 NTSTATUS __fastcall MmCopyMemHook(PVOID Buffer, PVOID BaseAddress, SIZE_T NumberOfBytesToRead, int mode, PSIZE_T NumberOfBytesRead) {
 	print(skCrypt("[HOOKER] MMcopymemory called!\n"));
 	print(skCrypt("[HOOKER] Buffer: 0x%llX\n"), Buffer);
@@ -80,7 +80,7 @@ NTSTATUS __fastcall MmCopyMemHook(PVOID Buffer, PVOID BaseAddress, SIZE_T Number
 ```
 
 Now in our driver we just have to locate the function (for example using a pattern) and hook it with a simple hook that will return at the end STATUS_UNSUCCESSFUL like following:
-```
+```c++
 		//place a r11 jmp hook that returns STATUS_UNSUCCESSFUL
 		unsigned char shell_code[] = {
 				0x49, 0xBB, //mov r11
