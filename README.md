@@ -11,7 +11,7 @@ Before any flaming happens, this will:
 *this is a basic mov rax hook
 
 
-[U]Why did i release it then?[/U]
+# Why did i release it then?
 Drivers that place hooks in some syscall function are nothing new, but in this project I'm hooking a function such as MmCopyMemory that EAC uses to scan the kernel memory to find manually mapped driver.
 The source code of the driver will hook this function and will print out the info and what EAC copies.
 I've just seen many people saying "just hook MmCopyMemory to see what EAC is scanning" but for some people this might sound like a hard or impossible task.
@@ -19,7 +19,7 @@ In this community are still many people who don't know how a hook even works and
 
 With this well documented driver you can place a hook on any function.
 
-#Let's take a look at MmCopyMemory:
+# Let's take a look at MmCopyMemory:
 MmCopyMemory is located in ntoskrnl.
 ```
 NTSTATUS __fastcall MmCopyMemory(PVOID TargetAddress, unsigned __int64 sourceaddress, unsigned __int64 size, int virtorphys, _QWORD *numberofbytestransferred)
