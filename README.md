@@ -19,10 +19,9 @@ In this community are still many people who don't know how a hook even works and
 
 With this well documented driver you can place a hook on any function.
 
-[U][B]Let's take a look at MmCopyMemory:[/B][/U]
+#Let's take a look at MmCopyMemory:
 MmCopyMemory is located in ntoskrnl.
-[img]https://i.imgur.com/DqsfB6P.png[/img]
-[CODE]
+```
 NTSTATUS __fastcall MmCopyMemory(PVOID TargetAddress, unsigned __int64 sourceaddress, unsigned __int64 size, int virtorphys, _QWORD *numberofbytestransferred)
 
 //or from microsoft docs
@@ -33,7 +32,7 @@ NTSTATUS MmCopyMemory(
   [in]  ULONG           Flags,
   [out] PSIZE_T         NumberOfBytesTransferred
 );
-[/CODE]
+```
 
 [QUOTE]TargetAddress
 A pointer to a caller-supplied buffer. This buffer must be in nonpageable memory.
@@ -57,7 +56,7 @@ NumberOfBytesTransferred
 A pointer to a location to which the routine writes the number of bytes successfully copied from the SourceAddress location to the buffer at TargetAddress.[/QUOTE]
 
 Sounds pretty easy to hook. 5 args! Let's make a function in our driver:
-[CODE]
+```
 NTSTATUS __fastcall MmCopyMemHook(PVOID Buffer, PVOID BaseAddress, SIZE_T NumberOfBytesToRead, int mode, PSIZE_T NumberOfBytesRead) {
 	print(skCrypt("[HOOKER] MMcopymemory called!\n"));
 	print(skCrypt("[HOOKER] Buffer: 0x%llX\n"), Buffer);
@@ -78,10 +77,10 @@ NTSTATUS __fastcall MmCopyMemHook(PVOID Buffer, PVOID BaseAddress, SIZE_T Number
 	}
 	return STATUS_UNSUCCESSFUL;
 }
-[/CODE]
+```
 
 Now in our driver we just have to locate the function (for example using a pattern) and hook it with a simple hook that will return at the end STATUS_UNSUCCESSFUL like following:
-[CODE]
+```
 		//place a r11 jmp hook that returns STATUS_UNSUCCESSFUL
 		unsigned char shell_code[] = {
 				0x49, 0xBB, //mov r11
@@ -90,7 +89,7 @@ Now in our driver we just have to locate the function (for example using a patte
 				0xb8,  0x01,  0x00,  0x00, 0xc0, //mov eax, STATUS_UNSUCCESSFUL
 				0xc3 // ret
 		};
-[/CODE]
+```
 Why? After our hook, we want to return asap because the rest of the MmCopyMemory function will be broken. I've used the r11 register instead of rax just to prove there's more than just rax (technically useless).
 
 Patterns to the function can be easily created with the SigMaker plugin for IDA pro.
