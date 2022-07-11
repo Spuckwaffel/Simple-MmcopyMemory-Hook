@@ -34,7 +34,7 @@ NTSTATUS MmCopyMemory(
 );
 ```
 
-[QUOTE]TargetAddress
+TargetAddress
 A pointer to a caller-supplied buffer. This buffer must be in nonpageable memory.
 
 SourceAddress
@@ -53,7 +53,7 @@ MM_COPY_MEMORY_VIRTUAL	SourceAddress specifies a virtual address.
 These two flag bits are mutually exclusive. The caller must set one or the other, but not both.
 
 NumberOfBytesTransferred
-A pointer to a location to which the routine writes the number of bytes successfully copied from the SourceAddress location to the buffer at TargetAddress.[/QUOTE]
+A pointer to a location to which the routine writes the number of bytes successfully copied from the SourceAddress location to the buffer at TargetAddress.
 
 Sounds pretty easy to hook. 5 args! Let's make a function in our driver:
 ```
