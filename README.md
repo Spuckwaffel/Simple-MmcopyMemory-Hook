@@ -4,11 +4,12 @@ A simple MmCopyMemory hook.
 check out the UC post.
 with this Release (dedicated to the kernel newbies) I will show you how basic hooks work.
 Before any flaming happens, this will:
-[LIST]
-[*]blue screen you because of pg within a hour
-[*]this will get you banned (it is detected)
-[*]this is a basic mov rax hook
-[/LIST]
+
+
+*blue screen you because of pg within a hour
+*this will get you banned (it is detected)
+*this is a basic mov rax hook
+
 
 [U]Why did i release it then?[/U]
 Drivers that place hooks in some syscall function are nothing new, but in this project I'm hooking a function such as MmCopyMemory that EAC uses to scan the kernel memory to find manually mapped driver.
